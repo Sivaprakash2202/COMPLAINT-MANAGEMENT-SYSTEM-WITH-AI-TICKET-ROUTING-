@@ -76,7 +76,7 @@ const TutorDashboard = () => {
       const { data, error } = await supabase
         .from("complaints")
         .select("*")
-        .or("current_level.eq.tutor,tutor_status.is.not.null")
+        .or("current_level.eq.tutor,tutor_status.not.is.null")
         .order("created_at", { ascending: false });
 
       if (error) throw error;

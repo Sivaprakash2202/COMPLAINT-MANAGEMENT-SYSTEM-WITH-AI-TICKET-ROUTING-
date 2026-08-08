@@ -78,7 +78,7 @@ const PrincipalDashboard = () => {
       const { data, error } = await supabase
         .from("complaints")
         .select("*")
-        .or("current_level.eq.principal,principal_status.is.not.null")
+        .or("current_level.eq.principal,principal_status.not.is.null")
         .order("created_at", { ascending: false });
 
       if (error) throw error;

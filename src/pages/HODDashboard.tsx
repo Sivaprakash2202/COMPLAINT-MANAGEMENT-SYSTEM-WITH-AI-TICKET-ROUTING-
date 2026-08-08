@@ -79,7 +79,7 @@ const HODDashboard = () => {
       const { data, error } = await supabase
         .from("complaints")
         .select("*")
-        .or("current_level.eq.hod,hod_status.is.not.null")
+        .or("current_level.eq.hod,hod_status.not.is.null")
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -112,12 +112,13 @@ const HODDashboard = () => {
   };
 
   const fetchHealthStats = async () => {
-    if (!profile?.department) return;
     try {
-      const { data, error } = await supabase
-        .from("complaints")
-        .select("*")
-        .eq("category", profile.department);
+      let query = supabase.from("complaints").select("*");
+      if (profile?.department) {
+         query = query.eq("category", profile.department);
+      }
+      
+      const { data, error } = await query;
       
       if (error) throw error;
       const allData = (data as unknown as Complaint[]) || [];
@@ -146,17 +147,23 @@ const HODDashboard = () => {
 
       setHealthStats({
         avgSpeed: `${avgHours} hours`,
-        hotspots: topHotspots,
+        hotspots: topHotspots.length > 0 ? topHotspots : ["None"],
         topTutor: resolved.length > 5 ? "Tutor Arjun" : "Establishing..."
       });
     } catch (err) {
-      console.error(err);
+      console.error("Failed to fetch health stats:", err);
+      // Set empty stats on error so it stops showing "Scanning..."
+      setHealthStats({
+        avgSpeed: "0 hours",
+        hotspots: ["Unknown"],
+        topTutor: "Unknown"
+      });
     }
   };
 
   useEffect(() => {
-     if (profile?.department) fetchHealthStats();
-  }, [profile?.department]);
+     if (profile) fetchHealthStats();
+  }, [profile]);
 
   if (authLoading || isLoading) {
     return (
