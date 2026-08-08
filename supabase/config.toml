@@ -1,0 +1,36 @@
+project_id = "oehdoulnvxcxepoanqvd"
+
+[functions.classify-complaint]
+verify_jwt = false
+
+[functions.ai-chatbot]
+verify_jwt = false
+
+[functions.send-notification]
+verify_jwt = false
+
+[functions.analyze-sentiment]
+verify_jwt = false
+
+[functions.find-duplicates]
+verify_jwt = false
+
+[functions.smart-lens]
+verify_jwt = false
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+# entrypoint = "./functions/smart-lens/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/analyze-image/*.html" ]
+
+[functions.check-duplicates]
+enabled = true
+verify_jwt = true
+import_map = "./functions/check-duplicates/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/check-duplicates/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/check-duplicates/*.html" ]

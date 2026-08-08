@@ -1,0 +1,1 @@
+UPDATE auth.users SET encrypted_password = crypt('Admin@1234', gen_salt('bf')) WHERE email = 'admin@acecompliantmanagement.dev'; INSERT INTO public.user_roles (user_id, role) SELECT '89cad81a-bccd-4641-8152-dda4c98089cc', 'super_admin' WHERE NOT EXISTS (SELECT 1 FROM public.user_roles WHERE user_id = '89cad81a-bccd-4641-8152-dda4c98089cc' AND role = 'super_admin');
